@@ -1,9 +1,10 @@
 const nodemailer = require("nodemailer");
 
-const sendMail = async (to, subject, text, attachements) => {
-  const trsnPorter = nodemailer.createTransport({
+const sendEmail = async (to, subject, text, attachments) => {
+  const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
+    secure: false, // true for 465, false for other ports
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
@@ -15,10 +16,16 @@ const sendMail = async (to, subject, text, attachements) => {
     to,
     subject,
     text,
-    attachements,
+    attachments,
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully");
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
 };
 
-module.exports = sendMail;
+module.exports = sendEmail;

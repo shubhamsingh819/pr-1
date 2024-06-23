@@ -22,20 +22,23 @@ function App() {
         "http://localhost:5000/api/submit",
         formData,
         {
-          Headers: {
+          headers: {
+            // Correct header key
             "Content-Type": "multipart/form-data",
           },
         }
       );
       alert(response.data.message);
     } catch (error) {
-      alert("error while submittion");
+      alert("Error while submission");
+      console.error(error); // Log the error for more details
     }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Full name</label>
+        <label>Full Name</label>
         <input
           type="text"
           value={fullName}
@@ -51,7 +54,7 @@ function App() {
         />
       </div>
       <div>
-        <label>Pdf file</label>
+        <label>PDF File</label>
         <input type="file" onChange={(e) => setPdf(e.target.files[0])} />
       </div>
       <button type="submit">Submit</button>
